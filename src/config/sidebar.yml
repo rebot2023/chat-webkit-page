@@ -1,0 +1,16 @@
+# Sidebar navigation
+
+- label: '简介'
+  link: '/'
+- label: '开始'
+  link: '/getting-started'
+- label: 组件清单
+  items:
+    - label: 'chatBox'
+      link: '/components/chatBox'
+- label: 更多
+  items:
+    - label: FAQ
+      link: /faq
+    - label: 'Gitlab'
+      link: https://github.com/lm-ecosystem/lm-ui
