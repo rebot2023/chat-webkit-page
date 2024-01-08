@@ -55,7 +55,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: '14'
+          node-version: '18'
           cache: ${{ steps.detect-package-manager.outputs.manager }}
           cache-dependency-path: ./apps/docs/package-lock.json
       - name: Setup Pages
@@ -80,14 +80,14 @@ jobs:
       #   run: npm config set registry https://npm.shlab.tech/
 
       - name: Install dependencies
-        run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
+        run: npm install
         working-directory: ./apps/docs
 
       - name: Build with Gatsby
         working-directory: ./apps/docs
         env:
           PREFIX_PATHS: 'true'
-        run: ${{ steps.detect-package-manager.outputs.manager }} run build
+        run: npm run build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
