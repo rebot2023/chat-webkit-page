@@ -14,6 +14,7 @@ description: 这是一款支持AIGC对话的组件，支持SSE流式输出对话
 ### 支持代码块、latex 公式及表格渲染，并配置头像及自定义气泡样式。
 
 ````jsx live=true
+// import ChatWebkit from 'chat-webkit'
 function App() {
   const sessionList = [
     {
@@ -63,6 +64,7 @@ render(App);
 ### 自定义对话框样式
 
 ````jsx live=true
+// import ChatWebkit from 'chat-webkit'
 function App() {
   const sessionList = [
     {
@@ -97,6 +99,7 @@ render(App);
 ### 配置 SSE 请求地址、token，通过 ref 方式暴露发起、停止，重试 sse 请求及获取 sse 状态接口。
 
 ````jsx live=true
+// import ChatWebkit from 'chat-webkit'
 const TooLongErrorComponent = () => {
   const tooLongErrorClick = () => {
     console.lopg("this chat is too long");
@@ -209,7 +212,7 @@ render(App);
 ### 插件显示配置。
 
 ````jsx live=true
-
+// import ChatWebkit from 'chat-webkit'
 function App() {
   const sessionList = [
   {
