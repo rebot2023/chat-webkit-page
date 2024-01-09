@@ -27,7 +27,7 @@ workbox.core.clientsClaim();
  */
 self.__precacheManifest = [
   {
-    "url": "webpack-runtime-8b7909055abd09ba6dae.js"
+    "url": "webpack-runtime-6ab7ca273035ea306264.js"
   },
   {
     "url": "framework-fe8a36c11d72e5ea365c.js"
@@ -43,11 +43,11 @@ self.__precacheManifest = [
   },
   {
     "url": "offline-plugin-app-shell-fallback/index.html",
-    "revision": "6b0b140744bbe1df101dcd3c58ba0e31"
+    "revision": "94955698de1906b9ea69aeaafc0c3d0d"
   },
   {
     "url": "manifest.webmanifest",
-    "revision": "3907c6d6b7ec124f022fff79dcdd21c5"
+    "revision": "806ecd9a61ddb01a97ca82698fba2c05"
   }
 ].concat(self.__precacheManifest || []);
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
@@ -152,12 +152,12 @@ const navigationRoute = new NavigationRoute(async ({ event }) => {
   lastNavigationRequest = event.request.url
 
   let { pathname } = new URL(event.request.url)
-  pathname = pathname.replace(new RegExp(`^/chat-webkit`), ``)
+  pathname = pathname.replace(new RegExp(`^/chat-webkit-page`), ``)
 
   // Check for resources + the app bundle
   // The latter may not exist if the SW is updating to a new version
   const resources = await idbKeyval.get(`resources:${pathname}`)
-  if (!resources || !(await caches.match(`/chat-webkit/app-11f5010fe4fd6021a233.js`))) {
+  if (!resources || !(await caches.match(`/chat-webkit-page/app-1a86db796d8cb987dd04.js`))) {
     return await fetch(event.request)
   }
 
@@ -170,7 +170,7 @@ const navigationRoute = new NavigationRoute(async ({ event }) => {
     }
   }
 
-  const offlineShell = `/chat-webkit/offline-plugin-app-shell-fallback/index.html`
+  const offlineShell = `/chat-webkit-page/offline-plugin-app-shell-fallback/index.html`
   const offlineShellWithKey = workbox.precaching.getCacheKeyForURL(offlineShell)
   return await caches.match(offlineShellWithKey)
 })
