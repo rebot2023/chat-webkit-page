@@ -1,5 +1,5 @@
 module.exports = {
-  pathPrefix: `/chat-webkit/`,
+  pathPrefix: `/chat-webkit-page/`,
   siteMetadata: {
     siteTitle: `lblab Component Docs`,
     defaultTitle: `lblab React Component Docs`,
