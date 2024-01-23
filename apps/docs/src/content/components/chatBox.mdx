@@ -3,14 +3,117 @@ title: AIGC 对话组件
 description: 这是一款支持AIGC对话的组件，支持SSE流式输出对话，支持markdown 格式输出渲染，如代码块、latex公式、表格、图片及视频等。
 ---
 
-### 这是一款AIGC对话组件
-##### 🎨支持通过配置后端 SSE 请求地址流式输出对话，开箱即用
-##### 😀支持md格式代码块、latex 公式、表格、图片及视频渲染。
-##### 😝支持约定格式的插件渲染
-##### 👻支持输出安全审核
-##### 😏支持对话组件中各元素及样式自定义
+### 这是一款 AIGC 对话组件
 
-## Chatbox 范例及live代码展示如下：
+##### 🎨 支持通过配置后端 SSE 请求地址流式输出对话，开箱即用
+
+##### 😀 支持 md 格式代码块、latex 公式、表格、图片及视频渲染。
+
+##### 😝 支持约定格式的插件渲染
+
+##### 👻 支持输出安全审核
+
+##### 😏 支持对话组件中各元素及样式自定义
+
+## Chatbox 范例及 live 代码展示如下：
+
+### 支持对接 delployLM reset api 进行流式输出
+
+````jsx live=true
+// import ChatWebkit from 'chat-webkit'
+function App() {
+  const ref = useRef();
+  const sessionList = [
+    {
+      id: "2",
+      message:
+        "以下是一个简单的快速排序（QuickSort）的 Python 代码实现：\n```python\ndef quick_sort(arr):\n   if len(arr) <= 1:\n       return arr\n   else:\n       pivot = arr[0]\n       left = []\n       right = []\n       for i in range(1, len(arr)):\n           if arr[i] < pivot:\n               left.append(arr[i])\n           else:\n               right.append(arr[i])\n       return quick_sort(left) + [pivot] + quick_sort(right)\n```\n这段代码使用了递归的方式实现快速排序。在每一次递归中，我们选择数组中的第一个元素作为基准值（pivot），然后将数组中所有小于基准值的元素放到一个新的左子数组中，将所有大于等于基准值的元素放到一个新的右子数组中。最后，我们将左子数组、基准值和右子数组拼接起来并返回。",
+      status: 0,
+      question: "帮我写一段快排？",
+    },
+  ];
+
+  
+  const startSse = () => {
+    ref.current.startSse("你好，AIGC大模型，今天是星期几啊？");
+  };
+
+  const stopSse = () => {
+    ref.current.stopSse();
+  };
+
+  const reGenerate = () => {
+    ref.current.reGenerate();
+  };
+
+  return (
+    <>
+      <div className="chatContainer">
+        <ChatWebkit.ChatBox
+          LmdeployBody={{
+            prompt: "写一个500字的儿童睡前故事",
+            session_id: -1,
+            interactive_mode: true,
+            stream: true,
+            request_output_len: 512,
+            top_p: 0.8,
+            top_k: 40,
+            temperature: 0.8,
+            repetition_penalty: 1,
+            ignore_eos: false,
+          }}
+          isLmdeploy={true}
+          propsSessionList={sessionList}
+          url={"http://10.140.0.187:8080/v1/chat/interactive"}
+          requestMessageContainerStyle={{ backgroundColor: "#CFBEFF" }}
+          responseMessageContainerStyle={{
+            backgroundColor: "rgba(39,45,230,.1)",
+          }}
+          ref={ref}
+        />
+        <Button
+          style={{
+            "background-color": "#4096ff",
+            "margin-right": "5px",
+            border: "0px",
+            padding: "10px",
+            "border-radius": "6px",
+          }}
+          onClick={startSse}
+        >
+          开始会话
+        </Button>
+        <Button
+          style={{
+            "background-color": "#4096ff",
+            "margin-right": "5px",
+            border: "0px",
+            padding: "10px",
+            "border-radius": "6px",
+          }}
+          onClick={stopSse}
+        >
+          停止会话
+        </Button>
+        <Button
+          style={{
+            "background-color": "#4096ff",
+            "margin-right": "5px",
+            border: "0px",
+            padding: "10px",
+            "border-radius": "6px",
+          }}
+          onClick={reGenerate}
+        >
+          重试
+        </Button>
+      </div>
+    </>
+  );
+}
+render(App);
+````
+
 ### 支持代码块、latex 公式及表格渲染，并配置头像及自定义气泡样式。
 
 ````jsx live=true
@@ -57,9 +160,6 @@ function App() {
 }
 render(App);
 ````
-
-
-
 
 ### 自定义对话框样式
 
@@ -215,154 +315,154 @@ render(App);
 // import ChatWebkit from 'chat-webkit'
 function App() {
   const sessionList = [
-  {
-    id: "2",
-    message: "开始会话后，这里就会显示第一句话，如果太长",
-    status: 0,
-    question: "1+1=?",
-    tools: [
-      {
-        args: {
-          text: "```python\ndef solution():\n    answer = cucl()\n    return answer\n```",
+    {
+      id: "2",
+      message: "开始会话后，这里就会显示第一句话，如果太长",
+      status: 0,
+      question: "1+1=?",
+      tools: [
+        {
+          args: {
+            text: "```python\ndef solution():\n    answer = cucl()\n    return answer\n```",
+          },
+          errmsg: "NameError(\"name 'cucl' is not defined\")",
+          result: null,
+          state: -10002,
+          thought:
+            "这段代码定义了一个名为 cucl 的函数，它返回 1 + 1 的结果，即 2。",
+          type: "PythonExecutor",
+          url: "http://python-executor-service.cloud-dev:8210/inference",
+          valid: 0,
         },
-        errmsg: "NameError(\"name 'cucl' is not defined\")",
-        result: null,
-        state: -10002,
-        thought:
-          "这段代码定义了一个名为 cucl 的函数，它返回 1 + 1 的结果，即 2。",
-        type: "PythonExecutor",
-        url: "http://python-executor-service.cloud-dev:8210/inference",
-        valid: 0,
-      },
-      {
-        args: {
-          text: "```python\ndef solution():\n    def cucl():\n        return 1 + 1\n    answer = cucl()\n    return answer\n```",
+        {
+          args: {
+            text: "```python\ndef solution():\n    def cucl():\n        return 1 + 1\n    answer = cucl()\n    return answer\n```",
+          },
+          errmsg: "",
+          result: {
+            text: "2",
+          },
+          state: 0,
+          thought:
+            "这段代码定义了一个名为 cucl 的函数，它返回 1 + 1 的结果，即 2。",
+          type: "PythonExecutor",
+          url: "http://python-executor-service.cloud-dev:8210/inference",
+          valid: 0,
         },
-        errmsg: "",
-        result: {
-          text: "2",
-        },
-        state: 0,
-        thought:
-          "这段代码定义了一个名为 cucl 的函数，它返回 1 + 1 的结果，即 2。",
-        type: "PythonExecutor",
-        url: "http://python-executor-service.cloud-dev:8210/inference",
-        valid: 0,
-      },
-    ],
-  },
-  {
-    id: "3",
-    message: "开始会话后，这里就会显示第一句话，如果太长",
-    status: 0,
-    question: "搜索复旦大学天气",
-    tools: [
-      {
-        args: {
-          text: "复旦大学天气",
-        },
-        errmsg: "",
-        result: {
-          origin: [
-            {
-              note: "directly return answerBox, thx google !",
-              origin: {
-                answer: "85°F",
+      ],
+    },
+    {
+      id: "3",
+      message: "开始会话后，这里就会显示第一句话，如果太长",
+      status: 0,
+      question: "搜索复旦大学天气",
+      tools: [
+        {
+          args: {
+            text: "复旦大学天气",
+          },
+          errmsg: "",
+          result: {
+            origin: [
+              {
+                note: "directly return answerBox, thx google !",
+                origin: {
+                  answer: "85°F",
+                  title:
+                    "Fudan University, 220 Handan Road, Yangpu District, Shanghai, China / Weather",
+                },
+                summ: "85°F",
                 title:
                   "Fudan University, 220 Handan Road, Yangpu District, Shanghai, China / Weather",
+                type: "answerBox",
+                url: "http://www.zgjia.com/jingdian/yangpu_fudandaxue/15tian.html",
               },
-              summ: "85°F",
-              title:
-                "Fudan University, 220 Handan Road, Yangpu District, Shanghai, China / Weather",
-              type: "answerBox",
-              url: "http://www.zgjia.com/jingdian/yangpu_fudandaxue/15tian.html",
-            },
-          ],
-          text: "0.85°F",
+            ],
+            text: "0.85°F",
+          },
+          state: 0,
+          thought: "我需要使用搜索API来获取复旦大学和天气的信息。",
+          type: "Search",
+          url: "http://moss-websearch.cloud:7004/inference",
+          valid: 0,
         },
-        state: 0,
-        thought: "我需要使用搜索API来获取复旦大学和天气的信息。",
-        type: "Search",
-        url: "http://moss-websearch.cloud:7004/inference",
-        valid: 0,
-      },
-      {
-        args: {
-          text: "复旦大学",
+        {
+          args: {
+            text: "复旦大学",
+          },
+          errmsg: "",
+          result: {
+            origin: [
+              {
+                note: "use description as summ",
+                summ: "复旦大学（Fudan University），简称“复旦”，位于中国上海，由中华人民共和国教育部直属，中央直管副部级建制，国家双一流（A类）、985工程、211工程建设高校，入选珠峰计划、111计划、2011计划、卓越医生教育培养计划、卓越法律人才教育培养计划、国家建设高水平大学公派研究生项目，九校联盟（C9）、中国大学校长联谊会、东亚研究型大学协会、环太平洋大学协会的重要成员，是一所世界知名、国内顶尖的全国重点大学。",
+                title: "复旦大学Fudan University",
+                type: "description",
+                url: "https://www.fudan.edu.cn/",
+              },
+              {
+                note: "fail to get ... use snippet",
+                summ: "复旦大学（英语：Fudan University），简称复旦，旧称复旦公学、国立复旦大学，始创于1905年，位于中国上海，是一所综合性研究型大学。复旦大学校名取自《尚书大传》 ...",
+                title: "复旦大学- 维基百科，自由的百科全书",
+                type: "snippet",
+                url: "https://zh.wikipedia.org/zh-hans/复旦大学",
+              },
+              {
+                note: "fail to get ... use snippet",
+                summ: "復旦大學（英語：Fudan University），簡稱復旦，舊稱復旦公學、國立復旦大學，始創於1905年，位於中國上海，是一所綜合性研究型大學。復旦大學校名取自《尚書大傳》 ...",
+                title: "復旦大學- 維基百科，自由的百科全書",
+                type: "snippet",
+                url: "https://zh.wikipedia.org/wiki/复旦大学",
+              },
+            ],
+            text: "0.复旦大学（Fudan University），简称“复旦”，位于中国上海，由中华人民共和国教育部直属，中央直管副部级建制，国家双一流（A类）、985工程、211工程建设高校，入选珠峰计划、111计划、2011计划、卓越医生教育培养计划、卓越法律人才教育培养计划、国家建设高水平大学公派研究生项目，九校联盟（C9）、中国大学校长联谊会、东亚研究型大学协会、环太平洋大学协会的重要成员，是一所世界知名、国内顶尖的全国重点大学。1.复旦大学（英语：Fudan University），简称复旦，旧称复旦公学、国立复旦大学，始创于1905年，位于中国上海，是一所综合性研究型大学。复旦大学校名取自《尚书大传》 ...2.復旦大學（英語：Fudan University），簡稱復旦，舊稱復旦公學、國立復旦大學，始創於1905年，位於中國上海，是一所綜合性研究型大學。復旦大學校名取自《尚書大傳》 ...",
+          },
+          state: 0,
+          thought: "这个结果似乎不是我们想要的，我们需要重新搜索一下。",
+          type: "Search",
+          url: "http://moss-websearch.cloud:7004/inference",
+          valid: 0,
         },
-        errmsg: "",
-        result: {
-          origin: [
-            {
-              note: "use description as summ",
-              summ: "复旦大学（Fudan University），简称“复旦”，位于中国上海，由中华人民共和国教育部直属，中央直管副部级建制，国家双一流（A类）、985工程、211工程建设高校，入选珠峰计划、111计划、2011计划、卓越医生教育培养计划、卓越法律人才教育培养计划、国家建设高水平大学公派研究生项目，九校联盟（C9）、中国大学校长联谊会、东亚研究型大学协会、环太平洋大学协会的重要成员，是一所世界知名、国内顶尖的全国重点大学。",
-              title: "复旦大学Fudan University",
-              type: "description",
-              url: "https://www.fudan.edu.cn/",
-            },
-            {
-              note: "fail to get ... use snippet",
-              summ: "复旦大学（英语：Fudan University），简称复旦，旧称复旦公学、国立复旦大学，始创于1905年，位于中国上海，是一所综合性研究型大学。复旦大学校名取自《尚书大传》 ...",
-              title: "复旦大学- 维基百科，自由的百科全书",
-              type: "snippet",
-              url: "https://zh.wikipedia.org/zh-hans/复旦大学",
-            },
-            {
-              note: "fail to get ... use snippet",
-              summ: "復旦大學（英語：Fudan University），簡稱復旦，舊稱復旦公學、國立復旦大學，始創於1905年，位於中國上海，是一所綜合性研究型大學。復旦大學校名取自《尚書大傳》 ...",
-              title: "復旦大學- 維基百科，自由的百科全書",
-              type: "snippet",
-              url: "https://zh.wikipedia.org/wiki/复旦大学",
-            },
-          ],
-          text: "0.复旦大学（Fudan University），简称“复旦”，位于中国上海，由中华人民共和国教育部直属，中央直管副部级建制，国家双一流（A类）、985工程、211工程建设高校，入选珠峰计划、111计划、2011计划、卓越医生教育培养计划、卓越法律人才教育培养计划、国家建设高水平大学公派研究生项目，九校联盟（C9）、中国大学校长联谊会、东亚研究型大学协会、环太平洋大学协会的重要成员，是一所世界知名、国内顶尖的全国重点大学。1.复旦大学（英语：Fudan University），简称复旦，旧称复旦公学、国立复旦大学，始创于1905年，位于中国上海，是一所综合性研究型大学。复旦大学校名取自《尚书大传》 ...2.復旦大學（英語：Fudan University），簡稱復旦，舊稱復旦公學、國立復旦大學，始創於1905年，位於中國上海，是一所綜合性研究型大學。復旦大學校名取自《尚書大傳》 ...",
+        {
+          args: {
+            text: "复旦大学",
+          },
+          errmsg: "",
+          result: {
+            origin: [
+              {
+                note: "use description as summ",
+                summ: "复旦大学（Fudan University），简称“复旦”，位于中国上海，由中华人民共和国教育部直属，中央直管副部级建制，国家双一流（A类）、985工程、211工程建设高校，入选珠峰计划、111计划、2011计划、卓越医生教育培养计划、卓越法律人才教育培养计划、国家建设高水平大学公派研究生项目，九校联盟（C9）、中国大学校长联谊会、东亚研究型大学协会、环太平洋大学协会的重要成员，是一所世界知名、国内顶尖的全国重点大学。",
+                title: "复旦大学Fudan University",
+                type: "description",
+                url: "https://www.fudan.edu.cn/",
+              },
+              {
+                note: "fail to get ... use snippet",
+                summ: "复旦大学（英语：Fudan University），简称复旦，旧称复旦公学、国立复旦大学，始创于1905年，位于中国上海，是一所综合性研究型大学。复旦大学校名取自《尚书大传》 ...",
+                title: "复旦大学- 维基百科，自由的百科全书",
+                type: "snippet",
+                url: "https://zh.wikipedia.org/zh-hans/复旦大学",
+              },
+              {
+                note: "good summ and use it",
+                summ: "复旦大学在线教育中心。复旦大学在线教育中心。复旦大学在线教育中心。",
+                title: "复旦大学在线教育中心",
+                type: "my_summ",
+                url: "http://fudan.mooc.chaoxing.com/",
+              },
+            ],
+            text: "0.复旦大学（Fudan University），简称“复旦”，位于中国上海，由中华人民共和国教育部直属，中央直管副部级建制，国家双一流（A类）、985工程、211工程建设高校，入选珠峰计划、111计划、2011计划、卓越医生教育培养计划、卓越法律人才教育培养计划、国家建设高水平大学公派研究生项目，九校联盟（C9）、中国大学校长联谊会、东亚研究型大学协会、环太平洋大学协会的重要成员，是一所世界知名、国内顶尖的全国重点大学。1.复旦大学（英语：Fudan University），简称复旦，旧称复旦公学、国立复旦大学，始创于1905年，位于中国上海，是一所综合性研究型大学。复旦大学校名取自《尚书大传》 ...2.复旦大学在线教育中心。复旦大学在线教育中心。复旦大学在线教育中心。",
+          },
+          state: 0,
+          thought: "我需要使用搜索API来获取复旦大学和天气的信息。",
+          type: "Search",
+          url: "http://moss-websearch.cloud:7004/inference",
+          valid: 0,
         },
-        state: 0,
-        thought: "这个结果似乎不是我们想要的，我们需要重新搜索一下。",
-        type: "Search",
-        url: "http://moss-websearch.cloud:7004/inference",
-        valid: 0,
-      },
-      {
-        args: {
-          text: "复旦大学",
-        },
-        errmsg: "",
-        result: {
-          origin: [
-            {
-              note: "use description as summ",
-              summ: "复旦大学（Fudan University），简称“复旦”，位于中国上海，由中华人民共和国教育部直属，中央直管副部级建制，国家双一流（A类）、985工程、211工程建设高校，入选珠峰计划、111计划、2011计划、卓越医生教育培养计划、卓越法律人才教育培养计划、国家建设高水平大学公派研究生项目，九校联盟（C9）、中国大学校长联谊会、东亚研究型大学协会、环太平洋大学协会的重要成员，是一所世界知名、国内顶尖的全国重点大学。",
-              title: "复旦大学Fudan University",
-              type: "description",
-              url: "https://www.fudan.edu.cn/",
-            },
-            {
-              note: "fail to get ... use snippet",
-              summ: "复旦大学（英语：Fudan University），简称复旦，旧称复旦公学、国立复旦大学，始创于1905年，位于中国上海，是一所综合性研究型大学。复旦大学校名取自《尚书大传》 ...",
-              title: "复旦大学- 维基百科，自由的百科全书",
-              type: "snippet",
-              url: "https://zh.wikipedia.org/zh-hans/复旦大学",
-            },
-            {
-              note: "good summ and use it",
-              summ: "复旦大学在线教育中心。复旦大学在线教育中心。复旦大学在线教育中心。",
-              title: "复旦大学在线教育中心",
-              type: "my_summ",
-              url: "http://fudan.mooc.chaoxing.com/",
-            },
-          ],
-          text: "0.复旦大学（Fudan University），简称“复旦”，位于中国上海，由中华人民共和国教育部直属，中央直管副部级建制，国家双一流（A类）、985工程、211工程建设高校，入选珠峰计划、111计划、2011计划、卓越医生教育培养计划、卓越法律人才教育培养计划、国家建设高水平大学公派研究生项目，九校联盟（C9）、中国大学校长联谊会、东亚研究型大学协会、环太平洋大学协会的重要成员，是一所世界知名、国内顶尖的全国重点大学。1.复旦大学（英语：Fudan University），简称复旦，旧称复旦公学、国立复旦大学，始创于1905年，位于中国上海，是一所综合性研究型大学。复旦大学校名取自《尚书大传》 ...2.复旦大学在线教育中心。复旦大学在线教育中心。复旦大学在线教育中心。",
-        },
-        state: 0,
-        thought: "我需要使用搜索API来获取复旦大学和天气的信息。",
-        type: "Search",
-        url: "http://moss-websearch.cloud:7004/inference",
-        valid: 0,
-      },
-    ],
-  },
-];
+      ],
+    },
+  ];
 
   return (
     <>
@@ -414,6 +514,8 @@ render(App);
 | reviewTimeingComponent        | 自定义审核计时器插槽                 | 否           | JSX.Element                               |            |          |
 | reviewTimoutComponent         | 自定义审核超时插槽                   | 否           | JSX.Element                               |            |          |
 | isPluginCollpaseed            | 插件是否展开                         | 否           | boolean                                   |            |          |
+| isLmdeploy                    | 是否调用 LMdeploy RESET API          | 否           | boolean                                   |            |          |
+| LmdeployBody                  | LMdeploy 配置                        | 否           | boolean                                   |            |          |
 
 #### 插件数据(ToolInfo)格式说明
 

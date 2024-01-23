@@ -21,7 +21,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "styled-components": "^5.3.5",
-    "chat-webkit": "^0.0.31"
+    "chat-webkit": "^0.0.35"
   },
   "keywords": [
     "gatsby",
