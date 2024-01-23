@@ -3994,10 +3994,10 @@ chardet@^0.7.0:
   resolved "https://npm.shlab.tech/chardet/-/chardet-0.7.0.tgz"
   integrity sha512-mT8iDcrh03qDGRRmoA2hmBJnxpllMR+0/0qlzjqZES6NdiWDcZkCNAk4rPFZ9Q85r27unkiNNg8ZOiwZXBHwcA==
 
-chat-webkit@^0.0.34:
-  version "0.0.34"
-  resolved "https://registry.npmjs.org/chat-webkit/-/chat-webkit-0.0.34.tgz"
-  integrity sha512-3rfj648GikFQNpwmo2ygy70eNo5KNprw2S5t8nQCnRIE6jaRHkynVAqJdoetx6Xwh5YdpS8YfCY3SzXOKnVAKA==
+chat-webkit@^0.0.35:
+  version "0.0.35"
+  resolved "https://registry.npmjs.org/chat-webkit/-/chat-webkit-0.0.35.tgz"
+  integrity sha512-aP93XsC3b67rP199eEO5d/0bkfVn1ZU2X6l7w/5Xeie6nr4L/BnjBTSEEjXWVC/9mEJwYD4t2to/3noMon0Pxw==
   dependencies:
     "@ant-design/cssinjs" "^1.18.0-alpha.5"
     "@ant-design/icons" "^4.7.0"
