@@ -27,7 +27,7 @@ workbox.core.clientsClaim();
  */
 self.__precacheManifest = [
   {
-    "url": "webpack-runtime-fe5e64c489b9c7358cd8.js"
+    "url": "webpack-runtime-6ab7ca273035ea306264.js"
   },
   {
     "url": "framework-fe8a36c11d72e5ea365c.js"
@@ -43,7 +43,7 @@ self.__precacheManifest = [
   },
   {
     "url": "offline-plugin-app-shell-fallback/index.html",
-    "revision": "f9b06bf74fb65d81ad53bc2bb4cafb67"
+    "revision": "58e0434e33b41d18e9f305c285949f00"
   },
   {
     "url": "manifest.webmanifest",
@@ -157,7 +157,7 @@ const navigationRoute = new NavigationRoute(async ({ event }) => {
   // Check for resources + the app bundle
   // The latter may not exist if the SW is updating to a new version
   const resources = await idbKeyval.get(`resources:${pathname}`)
-  if (!resources || !(await caches.match(`/chat-webkit-page/app-fc4caabeb80b60cd43b4.js`))) {
+  if (!resources || !(await caches.match(`/chat-webkit-page/app-dff7d194cd949304a1dd.js`))) {
     return await fetch(event.request)
   }
 
